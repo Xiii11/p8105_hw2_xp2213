@@ -9,6 +9,7 @@ library(tidyverse)
 library(readxl)
 library(haven)
 library(tidyr)
+library(dplyr)
 ```
 
 
@@ -34,3 +35,31 @@ NYCtransit_df =
 ```
 
 The NYC Transit Subway Entrance and Exit dataset contains information about different subway station's entrances and exits. Other detailed information, such as which subway lines stop at which station and their geographic coordinates, ADA compliance, and detailed information about the entrances, staffing status, etc.In this step, I cleaned the dataset by only keep the required variables: `r names(NYCtransit_df)`. The variable "entry" also converted to `r class(pull(NYCtransit_df,entry))`. After the cleaning step, the tidy dataset contains `r nrow(NYCtransit_df)` rows and `r ncol(NYCtransit_df)` columns.
+
+```{r}
+
+distinct_station =
+  NYCtransit_df |> distinct(station_name,line)
+
+ADA_compliant_station =
+  NYCtransit_df |> 
+  filter(ada == TRUE) |> 
+  distinct(station_name,line)
+
+Entry_without_vending = 
+  NYCtransit_df |> 
+  filter(vending == "NO", entry == "TRUE") |> 
+  distinct(station_name,line)
+
+numEntry_without_vending = nrow(Entry_without_vending)
+numdistinct_station = nrow(distinct_station)
+
+prop_without_vending = numEntry_without_vending/numdistinct_station
+
+```
+
+In this dataset, there are `r nrow(distinct_station)` distinct stations and `r nrow(ADA_compliant_station)` stations are ADA compliant. The proportion of station entrances / exits without vending allow entrance is `r prop_without_vending`
+
+
+
+
