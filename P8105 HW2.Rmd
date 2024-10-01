@@ -81,3 +81,15 @@ ADA_compliant_A = NYCtransit_df |>
 There are `r station_served_A` distinct stations serve the A train and `r ADA_compliant_A` of the stations that serve the A train are ADA compliant.
 
 
+
+# Problem 2 Mr.Trash Wheel dataset
+
+## Section 1 Data Import
+
+```{r}
+Trash_wheel = 
+  read_excel("Data/202309 Trash Wheel Collection Data.xlsx") |> 
+  janitor::clean_names()
+```
+
+
