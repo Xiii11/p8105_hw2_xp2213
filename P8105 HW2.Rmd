@@ -33,3 +33,4 @@ NYCtransit_df =
 
 ```
 
+The NYC Transit Subway Entrance and Exit dataset contains information about different subway station's entrances and exits. Other detailed information, such as which subway lines stop at which station and their geographic coordinates, ADA compliance, and detailed information about the entrances, staffing status, etc.In this step, I cleaned the dataset by only keep the required variables: `r names(NYCtransit_df)`. The variable "entry" also converted to `r class(pull(NYCtransit_df,entry))`. After the cleaning step, the tidy dataset contains `r nrow(NYCtransit_df)` rows and `r ncol(NYCtransit_df)` columns.
