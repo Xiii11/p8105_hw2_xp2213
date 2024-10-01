@@ -36,6 +36,8 @@ NYCtransit_df =
 
 The NYC Transit Subway Entrance and Exit dataset contains information about different subway station's entrances and exits. Other detailed information, such as which subway lines stop at which station and their geographic coordinates, ADA compliance, and detailed information about the entrances, staffing status, etc.In this step, I cleaned the dataset by only keep the required variables: `r names(NYCtransit_df)`. The variable "entry" also converted to `r class(pull(NYCtransit_df,entry))`. After the cleaning step, the tidy dataset contains `r nrow(NYCtransit_df)` rows and `r ncol(NYCtransit_df)` columns.
 
+
+## Section 2
 ```{r}
 
 distinct_station =
@@ -58,8 +60,24 @@ prop_without_vending = numEntry_without_vending/numdistinct_station
 
 ```
 
-In this dataset, there are `r nrow(distinct_station)` distinct stations and `r nrow(ADA_compliant_station)` stations are ADA compliant. The proportion of station entrances / exits without vending allow entrance is `r prop_without_vending`
+In this dataset, there are `r nrow(distinct_station)` distinct stations and `r nrow(ADA_compliant_station)` stations are ADA compliant. The proportion of station entrances / exits without vending allow entrance is `r prop_without_vending`.
 
 
+## Section 3
+```{r}
+
+station_served_A = NYCtransit_df |> 
+  filter(grepl("A", routes_served)) |> 
+  distinct(station_name, line) |> 
+  nrow()
+  
+ADA_compliant_A = NYCtransit_df |> 
+   filter(grepl("A", routes_served), ada == TRUE) |> 
+  distinct(station_name,line) |> 
+  nrow()
+
+```
+
+There are `r station_served_A` distinct stations serve the A train and `r ADA_compliant_A` of the stations that serve the A train are ADA compliant.
 
 
