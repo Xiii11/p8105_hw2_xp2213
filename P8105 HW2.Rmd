@@ -95,7 +95,7 @@ Mr_wheel =
 
 ```
 
-In section 1, the original dataset was imported, and the "Mr. Trash Wheel" sheet was selected. After examining the content of the original excel dataset, I identified columns labeled "x15" and "x16" as non-data columns containing only NAs. Therefore, these two columns were removed. Additionally, any rows that did not correspond to a specific dumpster were filtered out from the dataset. Lastly, the values in the "sports_balls" column were rounded to nearest integer and converted to integer variable.
+In section 1, the original dataset was imported, and the "Mr. Trash Wheel" sheet was selected. After examining the content of the original excel dataset, I identified columns labeled "x15" and "x16" as non-data columns containing only NAs. Therefore, these two columns were removed. The first row, which contained figure but not actual data, was removed. Additionally, any rows that did not correspond to a specific dumpster were filtered out from the dataset. Lastly, the values in the "sports_balls" column were rounded to nearest integer and converted to integer variable.
 
 
 ## Section 2: Cleaning of the "Professor Trash Wheel" Sheet and "Gwynnda Trash Wheel" Sheet
@@ -159,7 +159,11 @@ In section 3, the three sheets were combined. The combined dataset contains a to
 bakers_df =
   read_csv("data/gbb_datasets/bakers.csv", na = c("NA", "", ".", " ")) |> 
   janitor::clean_names() |> 
-  separate(baker_name, into = c("baker_first_name", "last_name"), sep = "")
+  mutate(
+    baker_first_name = word(baker_name, 1),
+    baker_last_name = word(baker_name, -1)
+  ) |> 
+  select(-baker_name)
 
 bakes_df =
   read_csv("data/gbb_datasets/bakes.csv", na = c("NA", "", ".", " ")) |> 
@@ -184,7 +188,9 @@ results_df =
 
 ```
 
-### Check for completeness and correctness across datasets.
+In this section, the datasets were imported, and I reviewed the contents of each dataset. I noticed that the bakers' names in the baker.csv file were full names, whereas the other datasets only contained the bakers' first names. To ensure consistency across the datasets, I split the full names in baker.csv into separate columns as baker_first_name and baker_last_names. After verifying the consistency between the first_name and last_name columns and the original baker_name colomn, I removed the baker_name variable to avoid redundant information. I then labeled the baker as baker_first_name in all datasets, ensuring consistency. Additionally, in the results.csv dataset, the first two rows contains non-data values, so they have been removed.The values of result column in the results.csv were converted into more descriptive phrases, which is useful for readability and interpretation.
+
+## Section 2: Check for completeness and correctness across datasets.
 
 ```{r}
 anti_join(bakers_df,bakes_df)
@@ -194,17 +200,14 @@ anti_join(bakers_df,results_df)
 anti_join(results_df,bakes_df)
 ```
 
-### Combination
+## Section 3: Combination
 
 ```{r}
+
 GBbakeoff_df = results_df |> 
   left_join(bakes_df, by = c("series","baker_first_name","episode")) |> 
   left_join(bakers_df, by = c("baker_first_name","series")) |> 
-  relocate(series, episode, baker_first_name,last_name)
+  relocate(series, episode, baker_first_name, baker_last_name, baker_age, baker_occupation, hometown, technical, result,signature_bake, show_stopper)
   
-
-
 ```
 
-
-In this section, the datasets were imported, and I reviewed the contents of each dataset. I noticed that the bakers' names in the baker.csv file were full names, whereas the other datasets only contained the bakers' first names. To ensure consistency across the datasets, I split the full names in baker.csv into separate columns for first and last names. After verifying the consistency between the first_name and last_name columns and the original baker_name colomn, I removed the baker_name variable to avoid redundant information. I then labeled the first_name as baker in this dataset, consistent with other datasets.Additionally, in the results.csv dataset, the first two rows contains non-data values, so they have been removed.
