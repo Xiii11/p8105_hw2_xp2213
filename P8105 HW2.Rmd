@@ -219,4 +219,25 @@ write_csv(GBbakeoff_df,"data/GBbakeoff_df.csv")
 
 ```
 
-## Section 4: 
+## Section 4: Table Creation
+
+```{r}
+
+Star_win_df = 
+  GBbakeoff_df |> 
+  filter(series>=5 & series<=10, result == c("Star Baker","Series Winner")) |> 
+  select(series, episode, baker_first_name, baker_last_name, baker_age, result, baker_occupation, hometown, technical,signature_bake, show_stopper)
+
+knitr::kable(
+  Star_win_df,format = "html",
+  caption = "Table of Star baker/Winner of each episode in Seasons 5 through 10 "
+  )
+
+
+
+```
+
+In this section, the question asks about the star baker/winner of each episode in Seasons 5 through 10. I filtered out these persons and formed a reader-friendly table. The key information, such as the which series and episode the star baker/winner attend and results for illustrating they were either star baker or winner, were placed in front. Other personally relevant information of each participant was placed afterwards. 
+
+According to the table, the first thing I noticed is that Richard Burr earned "Star Baker" title in four episodes of Series 5. However, Nancy Birtwhistle was the "Series Winner" for that series. Similarly, in Series 6, Ian Cumming won "Star Backer" in two episodes, and Candice Brown did the same in Series 7. In Series 9, there were five different "Star Bakers" which is one more than in the other series. In Series 10, Steph Balckwell earned two "Star baker" title in two episodes, yet David Atherton was the "Series winner". Interestingly, there is no "Series Winner" recored for Series 6, 7, 8, and 9.In conclusion, based on the patterns observed in this table, it is clear that there were no any predictable overall winners. What stands out the most is that multiple_time "Star Bakers" do not always end up with winning the series, which goes againt what many people might expect. This makes the outcome of each series more surprising and unpredictable.
+
