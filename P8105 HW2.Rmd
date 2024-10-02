@@ -87,7 +87,8 @@ There are `r station_served_A` distinct stations serve the A train and `r ADA_co
 ## Section 1 Data Import & Cleaning of the "Mr. Trash Wheel" Sheet
 
 ```{r}
-Trash_wheel = 
+
+Mr_wheel = 
   read_excel("Data/202409 Trash Wheel Collection Data.xlsx", sheet = "Mr. Trash Wheel", 
   col_types = c("numeric","text","text","date","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","skip","skip")) |> 
   janitor::clean_names() |> 
@@ -95,6 +96,31 @@ Trash_wheel =
   mutate(
     sports_balls = as.integer(round(sports_balls))
   )
+
 ```
 
 In section 1, the original dataset was imported, and the "Mr. Trash Wheel" sheet was selected. After examining the content of the original excel dataset, I identified columns labeled "x15" and "x16" as non-data columns containing only NAs. Therefore, these two columns were removed. Additionally, any rows that did not correspond to a specific dumpster were filtered out from the dataset. Lastly, the values in the "sports_balls" column were rounded to nearest integer and converted to integer variable.
+
+
+## Section 2 Cleaning of the "Professor Trash Wheel" Sheet and "Gwynnda Trash Wheel" Sheet
+
+```{r}
+
+Prof_wheel = 
+  read_excel("Data/202409 Trash Wheel Collection Data.xlsx", sheet = "Professor Trash Wheel") |> 
+  janitor::clean_names() |> 
+  drop_na(dumpster) 
+
+Gwynnda_wheel = 
+  read_excel("Data/202409 Trash Wheel Collection Data.xlsx", sheet = "Gwynnda Trash Wheel") |> 
+  janitor::clean_names() |> 
+  drop_na(dumpster)
+
+```
+
+In section 2, similar steps were taken to clean the "Professor Trash Wheel" sheet and "Gwynnda Trash Wheel" sheet. After importing the original datasets of these two sheets, their contents were examined to ensure that no non-data entries were present. Also, any rows that did not correspond to a specific dumpster were filtered out from the datasets.
+
+In all three datasets, columns that are not considered non-data but contain many NA values are kept. Similarly, rows that lack useful information are also retained as long as they include dumpster-specific data.
+
+
+
