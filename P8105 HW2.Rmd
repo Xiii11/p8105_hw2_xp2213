@@ -15,7 +15,7 @@ library(dplyr)
 
 # Problem 1 NYC Transit Data
 
-## Section 1: Data Import
+## Section 1: Data import and cleaning
 
 ```{r, message=FALSE}
 
@@ -37,7 +37,7 @@ NYCtransit_df =
 The NYC Transit Subway Entrance and Exit dataset contains information about different subway station's entrances and exits. Other detailed information, such as which subway lines stop at which station and their geographic coordinates, ADA compliance, and detailed information about the entrances, staffing status, etc.In this step, I cleaned the dataset by only keep the required variables: `r names(NYCtransit_df)`. The variable "entry" also converted to `r class(pull(NYCtransit_df,entry))`. After the cleaning step, the tidy dataset contains `r nrow(NYCtransit_df)` rows and `r ncol(NYCtransit_df)` columns.
 
 
-## Section 2
+## Section 2: Distinct stations and ADA compliant Status
 ```{r}
 
 distinct_station =
@@ -59,7 +59,7 @@ Entry_without_vending =
 In this dataset, there are `r nrow(distinct_station)` distinct stations and `r nrow(ADA_compliant_station)` stations are ADA compliant. The proportion of station entrances / exits without vending allow entrance is `r Entry_without_vending`.
 
 
-## Section 3
+## Section 3: Distinct station serving the A train and ADA compliance status 
 ```{r}
 
 station_served_A = NYCtransit_df |> 
@@ -80,7 +80,7 @@ There are `r station_served_A` distinct stations serve the A train and `r ADA_co
 
 # Problem 2 Trash Wheel Dataset
 
-## Section 1: Data Import & Cleaning of the "Mr. Trash Wheel" Sheet
+## Section 1: Data import & cleaning of the "Mr. Trash Wheel" Sheet
 
 ```{r}
 
@@ -98,7 +98,7 @@ Mr_wheel =
 In section 1, the original dataset was imported, and the "Mr. Trash Wheel" sheet was selected. After examining the content of the original excel dataset, I identified columns labeled "x15" and "x16" as non-data columns containing only NAs. Therefore, these two columns were removed. The first row, which contained figure but not actual data, was removed. Additionally, any rows that did not correspond to a specific dumpster were filtered out from the dataset. Lastly, the values in the "sports_balls" column were rounded to nearest integer and converted to integer variable.
 
 
-## Section 2: Cleaning of the "Professor Trash Wheel" Sheet and "Gwynnda Trash Wheel" Sheet
+## Section 2: Cleaning of the "Professor Trash Wheel" sheet and "Gwynnda Trash Wheel" sheet
 
 ```{r}
 
@@ -152,7 +152,7 @@ In section 3, the three sheets were combined. The combined dataset contains a to
 
 # Problem 3 Great British Bake Off Dataset
 
-## Section 1: Data import and Creation of a single, well-organized dataset
+## Section 1: Data import of bakers.csv, bakes.csv, and results.csv, and creation of a single, well-organized dataset
 
 ```{r, message=FALSE}
 
@@ -219,7 +219,7 @@ write_csv(GBbakeoff_df,"data/GBbakeoff_df.csv")
 
 ```
 
-## Section 4: Table Creation
+## Section 4: Table creation for Star baker/Winner of each episode in Seasons 5 through 10
 
 ```{r}
 
@@ -240,4 +240,34 @@ knitr::kable(
 In this section, the question asks about the star baker/winner of each episode in Seasons 5 through 10. I filtered out these persons and formed a reader-friendly table. The key information, such as the which series and episode the star baker/winner attend and results for illustrating they were either star baker or winner, were placed in front. Other personally relevant information of each participant was placed afterwards. 
 
 According to the table, the first thing I noticed is that Richard Burr earned "Star Baker" title in four episodes of Series 5. However, Nancy Birtwhistle was the "Series Winner" for that series. Similarly, in Series 6, Ian Cumming won "Star Backer" in two episodes, and Candice Brown did the same in Series 7. In Series 9, there were five different "Star Bakers" which is one more than in the other series. In Series 10, Steph Balckwell earned two "Star baker" title in two episodes, yet David Atherton was the "Series winner". Interestingly, there is no "Series Winner" recored for Series 6, 7, 8, and 9.In conclusion, based on the patterns observed in this table, it is clear that there were no any predictable overall winners. What stands out the most is that multiple_time "Star Bakers" do not always end up with winning the series, which goes againt what many people might expect. This makes the outcome of each series more surprising and unpredictable.
+
+## Section 5: Dataset exploration of viewers.csv
+
+```{r,message=FALSE}
+
+viewers_df =
+  read_csv("data/gbb_datasets/viewers.csv", na = c("NA", "", ".", " ")) |> 
+  janitor::clean_names()
+
+```
+
+The first 10 rows of this dataset:
+
+```{r}
+
+head(viewers_df,10)
+
+```
+
+```{r}
+
+Ave_viewership1 = mean(pull(viewers_df,series_1), na.rm = TRUE)
+  
+Ave_viewership5 = mean(pull(viewers_df,series_5))
+
+```
+
+By checking the original imported dataset, I found there are missing values (NAs) for series_1 whereas series_5 contains no missing value. 
+
+The average viewership for Season 1 was `r Ave_viewership1`, and for Season 5 was `r Ave_viewership5`.
 
