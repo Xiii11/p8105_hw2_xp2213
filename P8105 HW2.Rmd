@@ -200,7 +200,7 @@ anti_join(bakers_df,results_df)
 anti_join(results_df,bakes_df)
 ```
 
-## Section 3: Combination
+## Section 3: Combining and organizing data into a meaningful structure
 
 ```{r}
 
@@ -211,3 +211,12 @@ GBbakeoff_df = results_df |>
   
 ```
 
+Exporting the final dataset as a CSV:
+
+```{r}
+
+write_csv(GBbakeoff_df,"data/GBbakeoff_df.csv")
+
+```
+
+## Section 4: 
