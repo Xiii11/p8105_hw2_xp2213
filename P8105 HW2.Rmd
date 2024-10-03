@@ -228,11 +228,10 @@ write_csv(GBbakeoff_df,"data/GBbakeoff_df.csv")
 Star_win_df = 
   GBbakeoff_df |> 
   filter(series >= 5 & series <= 10, result == "Star Baker"| result == "Series Winner") |> 
-  select(series, episode, baker_first_name, baker_last_name, baker_age, result, baker_occupation, hometown, technical,signature_bake, show_stopper)
+  select(series, episode, baker_first_name, baker_last_name, baker_age, result, baker_occupation, hometown)
 
 knitr::kable(
-  Star_win_df, format = "html",
-  caption = "Table of Star baker/Winner of each episode in Seasons 5 through 10 "
+  Star_win_df, caption = "Table of Star baker/Winner of each episode in Seasons 5 through 10 "
   )
 
 ```
